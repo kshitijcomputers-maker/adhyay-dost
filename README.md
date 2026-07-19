@@ -45,7 +45,21 @@ npm run dev
 ⚠️ Schema.sql me admin email hardcoded hai (`kshitijcomputers@gmail.com`) RLS policies me — agar email change karna ho to `supabase/schema.sql` ke un teen policies me email update karke SQL Editor me dobara run karo.
 
 ## Ab kya baaki hai (agle steps)
-- [ ] Original AdhyayDost tool (upload/summary/questions/flashcards) ko dashboard me React component ke roop me integrate karna
+- [x] Original AdhyayDost tool (upload/summary/questions/flashcards/video) dashboard me integrate ho gaya
 - [ ] Google AdSense script add karna (sirf free users ko dikhana — jab AdSense approval mil jaye)
 - [ ] Custom domain connect karna
 - [ ] (Optional future) Razorpay/Cashfree jaisa automated payment gateway, agar manual approval scale na kare
+
+## ⚠️ Zaroori: OpenRouter API Key add karo (tool ke kaam karne ke liye)
+
+Chapter upload karke summary/questions/flashcards banane wala feature OpenRouter API key use karta hai:
+
+1. https://openrouter.ai par apni API key nikaalo (jo already hai)
+2. Vercel project → Settings → Environment Variables me naya variable add karo:
+   - Key: `OPENROUTER_API_KEY`
+   - Value: apni OpenRouter key paste karo
+3. Redeploy karo (Vercel Deployments tab me latest deployment ke "..." menu se "Redeploy")
+
+⚠️ Ye API key **paid/metered** hoti hai (OpenRouter credits use hote hain) — free nahi hai. Har chapter process karne par thoda cost aayega.
+
+⚠️ **PDF seedha support nahi hai** (OpenRouter ka format Anthropic jaisa "document" block support nahi karta) — PDF chapter ke liye "फोटो" tab se page ki photo khींचke upload karo, ya Word/Excel tab use karo.

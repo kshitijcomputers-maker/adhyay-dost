@@ -1,0 +1,154 @@
+.adhyay-app{
+  --paper:#FBF6EC;
+  --paper-dark:#F1E9D8;
+  --ink:#20283D;
+  --ink-soft:#4B5468;
+  --coral:#E4572E;
+  --highlight:#F5C84C;
+  --green:#4C7A5C;
+  --line:#DCD0B4;
+  --card:#FFFDF7;
+
+  max-width:760px;
+  margin:0 auto;
+  padding:28px 0 60px;
+  position:relative;
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+}
+
+.adhyay-app *{box-sizing:border-box;}
+
+.adhyay-app header{ text-align:center; margin-bottom:20px; }
+.adhyay-app header .eyebrow{ font-family:'Caveat',cursive; font-size:20px; color:var(--coral); font-weight:700; }
+.adhyay-app header p{ color:var(--ink-soft); font-size:15px; margin:2px 0 0; }
+
+.adhyay-panel{
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  padding:22px;
+  box-shadow:0 2px 0 var(--line);
+}
+
+.adhyay-tabs-row{ display:flex; gap:8px; margin-bottom:16px; }
+.adhyay-tab-btn{
+  flex:1; padding:10px 12px; border-radius:10px;
+  border:1.5px solid var(--line); background:var(--paper-dark);
+  font-family:'Inter'; font-weight:600; font-size:14px;
+  color:var(--ink-soft); cursor:pointer; transition:all .15s;
+}
+.adhyay-tab-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+.adhyay-app textarea{
+  width:100%; min-height:130px; border-radius:10px;
+  border:1.5px solid var(--line); padding:12px;
+  font-family:'Inter'; font-size:14.5px; resize:vertical;
+  background:var(--paper); color:var(--ink);
+}
+.adhyay-app textarea:focus{ outline:2px solid var(--highlight); }
+
+.adhyay-upload-box{
+  border:2px dashed var(--line); border-radius:12px;
+  padding:26px 16px; text-align:center; cursor:pointer;
+  background:var(--paper); transition:border-color .15s;
+}
+.adhyay-upload-box:hover{ border-color:var(--coral); }
+.adhyay-upload-box p{ margin:8px 0 0; color:var(--ink-soft); font-size:14px; }
+.adhyay-upload-box strong{ color:var(--ink); }
+.adhyay-preview-img{ max-width:100%; max-height:220px; border-radius:8px; margin-top:10px; }
+
+.adhyay-go-btn{
+  width:100%; margin-top:16px; padding:14px; border:none; border-radius:12px;
+  background:var(--coral); color:#fff; font-family:'Baloo 2',sans-serif; font-weight:700;
+  font-size:16px; cursor:pointer; box-shadow:0 3px 0 #b8431f;
+}
+.adhyay-go-btn:active{ transform:translateY(2px); box-shadow:0 1px 0 #b8431f; }
+.adhyay-go-btn:disabled{ background:#c9c3b4; box-shadow:none; cursor:not-allowed; }
+
+.adhyay-loading{ text-align:center; padding:30px 0; font-family:'Caveat'; font-size:22px; color:var(--ink-soft); }
+.adhyay-spin{
+  width:34px; height:34px; border:4px solid var(--line); border-top-color:var(--coral);
+  border-radius:50%; margin:0 auto 10px; animation:adhyay-sp 0.8s linear infinite;
+}
+@keyframes adhyay-sp{ to{ transform:rotate(360deg); } }
+
+.adhyay-error-box{
+  background:#FBEAE4; border:1.5px solid var(--coral); color:#8a2e17;
+  padding:12px 14px; border-radius:10px; font-size:14px; margin-top:14px;
+}
+
+.adhyay-results{ margin-top:22px; }
+.adhyay-bookmark-row{ display:flex; gap:6px; margin-bottom:-1px; flex-wrap:wrap; }
+.adhyay-bookmark{
+  padding:10px 16px; border-radius:10px 10px 0 0; background:var(--paper-dark);
+  border:1.5px solid var(--line); border-bottom:none; font-family:'Baloo 2';
+  font-weight:700; font-size:14px; color:var(--ink-soft); cursor:pointer;
+}
+.adhyay-bookmark.active{ background:var(--card); color:var(--ink); border-color:var(--ink); }
+.adhyay-result-panel{ background:var(--card); border:1.5px solid var(--line); border-radius:0 12px 12px 12px; padding:20px; }
+
+.adhyay-summary-item{ display:flex; gap:12px; padding:12px 0; border-bottom:1px dashed var(--line); }
+.adhyay-summary-item:last-child{ border-bottom:none; }
+.adhyay-summary-num{ font-family:'Baloo 2'; font-weight:800; font-size:18px; color:var(--coral); min-width:26px; }
+.adhyay-summary-text{ font-size:14.5px; line-height:1.6; color:var(--ink); }
+.adhyay-yt-link{ display:inline-block; margin-top:6px; font-size:12.5px; color:var(--green); text-decoration:none; font-weight:600; }
+.adhyay-yt-link:hover{ text-decoration:underline; }
+
+.adhyay-q-item{ border-bottom:1px solid var(--line); padding:12px 0; }
+.adhyay-q-item:last-child{ border-bottom:none; }
+.adhyay-q-head{ display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:600; font-size:14.5px; }
+.adhyay-q-mark{ font-family:'Baloo 2'; color:var(--coral); margin-right:8px; }
+.adhyay-q-answer{ overflow:hidden; max-height:0; transition:max-height .25s ease; font-size:14px; color:var(--ink-soft); line-height:1.6; background:var(--paper-dark); border-radius:8px; }
+.adhyay-q-item.open .adhyay-q-answer{ max-height:300px; margin-top:8px; padding:10px 12px; }
+.adhyay-q-arrow{ transition:transform .2s; color:var(--ink-soft); display:inline-block; }
+.adhyay-q-item.open .adhyay-q-arrow{ transform:rotate(90deg); }
+
+.adhyay-fc-progress{ display:flex; align-items:center; gap:10px; margin-bottom:16px; font-size:13px; color:var(--ink-soft); }
+.adhyay-fc-bar{ flex:1; height:8px; background:var(--paper-dark); border-radius:6px; overflow:hidden; }
+.adhyay-fc-bar-fill{ height:100%; background:var(--green); transition:width .3s; }
+
+.adhyay-flashcard-wrap{ perspective:1000px; height:210px; margin-bottom:16px; }
+.adhyay-flashcard{ width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .5s; cursor:pointer; }
+.adhyay-flashcard.flipped{ transform:rotateY(180deg); }
+.adhyay-fc-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:14px;
+  border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:20px; font-size:16px; font-weight:600; line-height:1.5;
+}
+.adhyay-fc-front{ background:var(--highlight); color:var(--ink); }
+.adhyay-fc-back{ background:var(--ink); color:var(--paper); transform:rotateY(180deg); }
+.adhyay-fc-hint{ position:absolute; bottom:10px; left:0; right:0; font-family:'Caveat'; font-size:14px; font-weight:600; opacity:.7; }
+
+.adhyay-fc-btns{ display:flex; gap:10px; }
+.adhyay-fc-btn{ flex:1; padding:12px; border-radius:10px; border:none; font-family:'Baloo 2'; font-weight:700; font-size:14px; cursor:pointer; }
+.adhyay-fc-btn.remembered{ background:var(--green); color:#fff; }
+.adhyay-fc-btn.review{ background:var(--paper-dark); color:var(--ink); border:1.5px solid var(--line); }
+
+.adhyay-fc-done{ text-align:center; padding:30px 10px; }
+.adhyay-fc-done .em{ font-size:40px; }
+.adhyay-fc-done h3{ font-family:'Baloo 2'; margin:6px 0; }
+.adhyay-reset-btn{ margin-top:10px; background:none; border:1.5px solid var(--line); padding:10px 16px; border-radius:10px; font-weight:600; cursor:pointer; color:var(--ink-soft); }
+
+.adhyay-new-chapter-btn{ display:block; margin:22px auto 0; background:none; border:none; color:var(--ink-soft); font-size:13.5px; text-decoration:underline; cursor:pointer; }
+
+.adhyay-video-screen{
+  background:var(--ink); border-radius:14px; padding:34px 22px; text-align:center;
+  color:var(--paper); min-height:230px; display:flex; flex-direction:column;
+  justify-content:center; position:relative;
+}
+.adhyay-video-emoji{ font-size:52px; margin-bottom:12px; }
+.adhyay-video-heading{ font-family:'Baloo 2'; font-size:18px; font-weight:700; margin-bottom:10px; }
+.adhyay-video-caption{ font-size:14.5px; line-height:1.65; color:#D8DCE8; }
+.adhyay-video-progress-row{ display:flex; gap:5px; margin-top:14px; justify-content:center; flex-wrap:wrap; }
+.adhyay-video-dot{ width:8px; height:8px; border-radius:50%; background:var(--paper-dark); border:1px solid var(--line); }
+.adhyay-video-dot.done{ background:var(--green); border-color:var(--green); }
+.adhyay-video-dot.current{ background:var(--coral); border-color:var(--coral); }
+.adhyay-video-controls{ display:flex; gap:10px; margin-top:16px; justify-content:center; align-items:center; }
+.adhyay-vid-btn{
+  width:42px; height:42px; border-radius:50%; border:1.5px solid var(--line);
+  background:var(--paper-dark); cursor:pointer; font-size:15px;
+  display:flex; align-items:center; justify-content:center;
+}
+.adhyay-vid-btn.play{ background:var(--coral); color:#fff; border-color:var(--coral); width:52px; height:52px; font-size:19px; }
+.adhyay-video-note{ font-size:12px; color:var(--ink-soft); text-align:center; margin-top:10px; }

@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import LogoutButton from './LogoutButton';
+import AdhyayTool from './AdhyayTool';
 
 export default async function Dashboard() {
   const supabase = createClient();
@@ -66,10 +67,7 @@ export default async function Dashboard() {
         </a>
       )}
 
-      {/* TODO: original AdhyayDost tool (upload/summary/questions/flashcards) yahan mount hoga */}
-      <p style={{ color: '#888', fontSize: 14 }}>
-        Adhyay Dost tool yahan integrate hoga (existing HTML artifact ko is page me React component ke roop me convert karke).
-      </p>
+      <AdhyayTool />
     </main>
   );
 }

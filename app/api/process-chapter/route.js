@@ -83,7 +83,7 @@ export async function POST(request) {
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 1500,
+        max_tokens: partNum === 2 ? 2200 : 1200,
         messages: [{ role: 'user', content: contentParts }],
       }),
     });
@@ -103,12 +103,18 @@ export async function POST(request) {
       return NextResponse.json({ error: 'AI se text response nahi mila.' }, { status: 502 });
     }
 
-    const clean = rawText.replace(/```json|```/g, '').trim();
+    let clean = rawText.replace(/```json|```/g, '').trim();
+    const firstBrace = clean.indexOf('{');
+    const lastBrace = clean.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+      clean = clean.slice(firstBrace, lastBrace + 1);
+    }
     let resultData;
     try {
       resultData = JSON.parse(clean);
     } catch (e) {
-      return NextResponse.json({ error: 'AI ka jawab samajh nahi aaya, dobara try karo.' }, { status: 502 });
+      console.error('JSON parse failed for part', partNum, '. Raw text was:', rawText);
+      return NextResponse.json({ error: 'AI ka jawab samajh nahi aaya (adhoora JSON aaya), dobara try karo.' }, { status: 502 });
     }
 
     return NextResponse.json({ resultData });

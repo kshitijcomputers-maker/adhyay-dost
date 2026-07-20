@@ -151,36 +151,48 @@ export default function AdhyayTool() {
         return;
       }
 
-      // Part 2 — flashcards + video
-      const res2 = await fetch('/api/process-chapter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...basePayload, part: 2 }),
-      });
-      const data2 = await res2.json();
+      // Part 2 — flashcards + video (agar ye fail ho jaye to bhi summary/questions dikhte rahenge)
+      let flashcards = [];
+      let videoSlides = [];
+      let part2ErrorMsg = '';
+      try {
+        const res2 = await fetch('/api/process-chapter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...basePayload, part: 2 }),
+        });
+        const data2 = await res2.json();
+        if (res2.ok) {
+          flashcards = data2.resultData.flashcards || [];
+          videoSlides = data2.resultData.video_slides || [];
+        } else {
+          part2ErrorMsg = data2.error || 'Flashcards/video nahi ban paaye.';
+        }
+      } catch (e) {
+        part2ErrorMsg = 'Flashcards/video ke liye connection me dikkat aayi.';
+      }
+
       clearInterval(msgIntervalRef.current);
       setLoading(false);
-
-      if (!res2.ok) {
-        setErrorMsg(data2.error || 'कुछ गड़बड़ हो गई — दोबारा कोशिश करें।');
-        return;
-      }
 
       const merged = {
         topic: data1.resultData.topic,
         summary: data1.resultData.summary,
         questions: data1.resultData.questions,
-        flashcards: data2.resultData.flashcards || [],
-        video_slides: data2.resultData.video_slides || [],
+        flashcards,
+        video_slides: videoSlides,
       };
 
       setResultData(merged);
-      setFcQueue(merged.flashcards.map((c, i) => ({ ...c, id: i })));
-      setFcTotal(merged.flashcards.length);
+      setFcQueue(flashcards.map((c, i) => ({ ...c, id: i })));
+      setFcTotal(flashcards.length);
       setFcRemembered(0);
       setCurrentSlideIdx(0);
       setIsPlaying(false);
       setActiveView('summary');
+      if (part2ErrorMsg) {
+        setErrorMsg('⚠️ Summary/Questions ban gaye, lekin ' + part2ErrorMsg + ' (Flashcards/Video tab par "फिर कोशिश करें" nahi hai abhi — nayi baar chapter daalke try karo)');
+      }
     } catch (err) {
       clearInterval(msgIntervalRef.current);
       setLoading(false);
@@ -417,7 +429,11 @@ export default function AdhyayTool() {
 
             {activeView === 'flashcards' && (
               <div>
-                {fcQueue.length === 0 ? (
+                {resultData.flashcards.length === 0 ? (
+                  <p style={{ color: '#8a2e17', fontSize: 14.5, fontWeight: 600, textAlign: 'center', padding: '20px 0' }}>
+                    ⚠️ इस चैप्टर के फ्लैशकार्ड्स नहीं बन पाए। कृपया नया चैप्टर डालकर दोबारा कोशिश करें।
+                  </p>
+                ) : fcQueue.length === 0 ? (
                   <div className="adhyay-fc-done">
                     <div className="em">🎉</div>
                     <h3>सारे कार्ड्स पूरे हो गए!</h3>
@@ -473,7 +489,11 @@ export default function AdhyayTool() {
 function VideoTab({ resultData, currentSlideIdx, isPlaying, lang, onPlay, onNext, onPrev, onRestart }) {
   const videoSlides = resultData.video_slides || [];
   if (!videoSlides.length) {
-    return <p style={{ color: 'var(--ink-soft)', fontSize: 14 }}>इस चैप्टर के लिए वीडियो स्लाइड उपलब्ध नहीं हो पाईं।</p>;
+    return (
+      <p style={{ color: '#8a2e17', fontSize: 14.5, fontWeight: 600, textAlign: 'center', padding: '20px 0' }}>
+        ⚠️ इस चैप्टर के लिए वीडियो स्लाइड नहीं बन पाईं। कृपया नया चैप्टर डालकर दोबारा कोशिश करें।
+      </p>
+    );
   }
   const slide = videoSlides[currentSlideIdx];
   const voiceSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;

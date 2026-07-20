@@ -134,31 +134,49 @@ export default function AdhyayTool() {
       setLoadingMsgIdx((i) => (i + 1) % loadingMsgs.length);
     }, 2200);
 
+    const basePayload = { mode, lang, imageBase64, imageMediaType, docExtractedText, textInput };
+
     try {
-      const res = await fetch('/api/process-chapter', {
+      // Part 1 — summary + questions
+      const res1 = await fetch('/api/process-chapter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mode,
-          lang,
-          imageBase64,
-          imageMediaType,
-          docExtractedText,
-          textInput,
-        }),
+        body: JSON.stringify({ ...basePayload, part: 1 }),
       });
-      const data = await res.json();
-      clearInterval(msgIntervalRef.current);
-      setLoading(false);
-
-      if (!res.ok) {
-        setErrorMsg(data.error || 'कुछ गड़बड़ हो गई — दोबारा कोशिश करें।');
+      const data1 = await res1.json();
+      if (!res1.ok) {
+        clearInterval(msgIntervalRef.current);
+        setLoading(false);
+        setErrorMsg(data1.error || 'कुछ गड़बड़ हो गई — दोबारा कोशिश करें।');
         return;
       }
 
-      setResultData(data.resultData);
-      setFcQueue(data.resultData.flashcards.map((c, i) => ({ ...c, id: i })));
-      setFcTotal(data.resultData.flashcards.length);
+      // Part 2 — flashcards + video
+      const res2 = await fetch('/api/process-chapter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...basePayload, part: 2 }),
+      });
+      const data2 = await res2.json();
+      clearInterval(msgIntervalRef.current);
+      setLoading(false);
+
+      if (!res2.ok) {
+        setErrorMsg(data2.error || 'कुछ गड़बड़ हो गई — दोबारा कोशिश करें।');
+        return;
+      }
+
+      const merged = {
+        topic: data1.resultData.topic,
+        summary: data1.resultData.summary,
+        questions: data1.resultData.questions,
+        flashcards: data2.resultData.flashcards || [],
+        video_slides: data2.resultData.video_slides || [],
+      };
+
+      setResultData(merged);
+      setFcQueue(merged.flashcards.map((c, i) => ({ ...c, id: i })));
+      setFcTotal(merged.flashcards.length);
       setFcRemembered(0);
       setCurrentSlideIdx(0);
       setIsPlaying(false);
